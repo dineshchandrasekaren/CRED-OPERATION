@@ -1,4 +1,5 @@
-export const movieData = [
+import { DELETE, ISLIKE, ADD, UPDATE } from "./actionType";
+const movies = [
   {
     _id: "gvnzew4eh6d87v",
     title: "Terminator",
@@ -82,3 +83,21 @@ export const movieData = [
     isEdit: false,
   },
 ];
+export function reducer(state = movies, action) {
+  switch (action.type) {
+    case DELETE:
+      return state.filter((m) => m._id !== action.payload.id);
+    case ADD:
+      return [...state, action.payload];
+    case ISLIKE:
+      return state.map((m) =>
+        m._id !== action.payload.id ? m : { ...m, isLiked: !m.isLiked }
+      );
+    case UPDATE:
+      return state.map((m) =>
+        m._id !== action.payload.id ? m : { ...m, ...action.payload }
+      );
+    default:
+      return state;
+  }
+}
